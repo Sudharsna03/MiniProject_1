@@ -1,0 +1,53 @@
+package practice;
+
+import java.io.File;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class MiniProject {
+	static WebElement ele;
+	static WebDriver driver;
+	
+	static void driverSetup(String url) {
+		driver = new EdgeDriver();
+		driver.get(url);
+	}
+	static void productClick(String locator) {
+		driver.findElement(By.xpath(locator)).click();
+	}
+	static void enterText(String locator, String txt) {
+		driver.findElement(By.xpath(locator)).sendKeys(txt);
+	}
+	static void screenshot() {
+	    File src = ((TakesScreenshot)driver)
+	            .getScreenshotAs(OutputType.FILE);
+
+	    src.renameTo(new File("screenshot\\snapshot1.png"));
+	}
+
+	public static void main(String[] args) {
+		String path = "C:\\Users\\ryoga\\eclipse-workspace\\selejava\\screenshot\\snapshot1.png";
+		
+		driverSetup("https://petstore.octoperf.com/actions/Catalog.action");
+		screenshot();
+		productClick("//img[@src='../images/cats_icon.gif']"); // select product
+		screenshot();
+		productClick("//a[text()='FL-DSH-01']"); // product list
+		screenshot();
+		productClick("//a[contains(@href,'&workingItemId=EST-14')]"); //add to cart
+		screenshot();
+		enterText("//input[@name= 'EST-14']","2"); //qtyUpdate
+		screenshot();
+		productClick("//input[@value='Update Cart']"); //cartUpdate
+		screenshot();
+		productClick("//a[contains(text(),'Proceed')]"); //checkout
+		screenshot();
+		
+	}
+
+}
