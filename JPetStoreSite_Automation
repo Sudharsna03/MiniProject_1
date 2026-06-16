@@ -1,7 +1,9 @@
 package practice;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -13,41 +15,45 @@ public class MiniProject {
 	static WebElement ele;
 	static WebDriver driver;
 	
+	static void screenshot(String screenname)throws IOException {
+		String path = "C:\\Users\\ryoga\\eclipse-workspace\\selejava\\screenshot\\"+screenname+".png";
+    	File dest = new File(path);
+		TakesScreenshot ts = (TakesScreenshot)driver;
+		File src = ts.getScreenshotAs(OutputType.FILE); //temp
+		FileUtils.copyFile(src, dest);
+    }
+	
 	static void driverSetup(String url) {
 		driver = new EdgeDriver();
 		driver.get(url);
+		
 	}
 	static void productClick(String locator) {
 		driver.findElement(By.xpath(locator)).click();
+		
 	}
 	static void enterText(String locator, String txt) {
 		driver.findElement(By.xpath(locator)).sendKeys(txt);
 	}
-	static void screenshot() {
-	    File src = ((TakesScreenshot)driver)
-	            .getScreenshotAs(OutputType.FILE);
+	
 
-	    src.renameTo(new File("screenshot\\snapshot1.png"));
-	}
-
-	public static void main(String[] args) {
-		String path = "C:\\Users\\ryoga\\eclipse-workspace\\selejava\\screenshot\\snapshot1.png";
+	public static void main(String[] args) throws IOException {
 		
 		driverSetup("https://petstore.octoperf.com/actions/Catalog.action");
-		screenshot();
+		screenshot("img1");
 		productClick("//img[@src='../images/cats_icon.gif']"); // select product
-		screenshot();
+		screenshot("img2");
 		productClick("//a[text()='FL-DSH-01']"); // product list
-		screenshot();
+		screenshot("img3");
 		productClick("//a[contains(@href,'&workingItemId=EST-14')]"); //add to cart
-		screenshot();
+		screenshot("img4");
 		enterText("//input[@name= 'EST-14']","2"); //qtyUpdate
-		screenshot();
+		screenshot("img5");
 		productClick("//input[@value='Update Cart']"); //cartUpdate
-		screenshot();
+		screenshot("img6");
 		productClick("//a[contains(text(),'Proceed')]"); //checkout
-		screenshot();
+		screenshot("img7");
 		
 	}
-
+  
 }
